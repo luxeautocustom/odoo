@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="inherit_product_form_sale_order_section">
+            <field name="name">Product.Inherit.View</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="categ_id" position="after">
+                    <field name="section_id"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

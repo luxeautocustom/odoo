@@ -1,0 +1,10 @@
+<odoo>
+    <data>
+        <template id="datepickered" name="date_picker_extension" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/DatePicker/static/js/datepicker.js"></script>
+                <script type="text/javascript" src="/DatePicker/static/js/datePickerExtension.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

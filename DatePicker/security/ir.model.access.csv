@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_y_date_y_date,y_date.y_date,model_y_date_y_date,base.group_user,1,1,1,1

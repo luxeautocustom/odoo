@@ -1,0 +1,119 @@
+/* Generaal*/
+@media screen and (max-width: 1050px) {
+    .hidden_under1000 {display: none !important;}
+}
+/* Section Preview */
+.doc_section_short {
+    cursor: pointer;
+    height: 100%;
+}
+.doc_section_short:hover {
+    margin-top: 4px;
+    box-shadow: 0 0 4px black;
+}
+.mhe-78 {max-height: 78px;}
+.ovf-hidden {overflow: hidden;}
+.link_header {color: inherit !important;}
+.link_header:hover {text-decoration: none;  }
+.docu-navbar-expand {justify-content: flex-end !important;}
+.docu-input-group {width: 100% !important;}
+/* Searchbar */
+.docu_search_selection {cursor: pointer;}
+.docu_search_highlight {
+    background-color: #FFFF99 !important;
+    color: black;
+}
+.line-doc-2 {line-height: 2;}
+/* It has everythin left, since key word might be in a number of html tags*/
+.docu_search_highlight_active {border-left: 8px groove #FF6600;   }
+.stickynavtop {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+/* Documentation page */
+#documentation_content {
+    min-height: 600px;
+    overflow-wrap: break-word;
+}
+.warning_section {
+    min-height: 200px;  
+    color: white; 
+    background: repeating-linear-gradient(
+        45deg,
+        #5C5B80,
+        #5C5B80 10px,
+        #7472a3 10px,
+        #7472a3 20px
+    );
+}
+.docu_access_label {font-size: 2em;}
+#nav_sticky {
+    overflow: auto;
+    border-right: 1px solid #e9ecef;
+    scrollbar-color: darkgrey;
+    scrollbar-width: thin;
+}
+#nav_sticky::-webkit-scrollbar {
+    width: 1px;
+    background-color: #e9ecef;
+}
+#nav_sticky::-webkit-scrollbar-thumb{
+    width: 1px;
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+#nav_sticky ul {
+    list-style: none;
+    padding: 0 0 0 0;
+    margin: 0;
+}
+#nav_sticky li {
+    border-bottom: 1px solid #e9ecef;
+    line-height: 100%;
+    padding: 6px 0px;
+    overflow-wrap: break-word;
+    display: none;
+    padding-left: 4px;    
+}
+#nav_sticky a {
+    color: inherit;
+    overflow: hidden;
+}
+#nav_sticky a:hover {
+    text-decoration: none;
+}
+.documentation-full-view {
+    max-width: 96%;
+    flex: 0 0 96%;
+}
+.navigation-collapsed {
+    max-width: 4%;
+    flex: 0 0 4%;
+    padding-left: 15px;
+}
+.navigation-collapsed #nav_sticky {
+    border-right: none !important;
+}
+.nav-icon {
+    margin-right: 8px;
+    cursor: pointer;
+}
+.nav-icon:hover {color: inherit !important;}
+/* Actions on nav anchors */
+#nav_sticky li i.nav_anchor_collapse{display: none;}
+#nav_sticky li.main_nav_entry {display: list-item !important;}
+#nav_sticky li.shown_nav_entry {display: list-item !important;}
+#nav_sticky li.active_entry {
+    display: list-item !important;
+    font-weight: bold;
+    border-left: 1px solid darkgrey;
+}
+#nav_sticky li.active_entry i.nav_anchor_expand {display: none;}
+#nav_sticky li.active_entry i.nav_anchor_collapse {display: inline-block !important;}
+.nav_anchor_icon {
+    padding-right: 2px;
+    padding-left: 4px;
+    font-size: 75%;
+    color: slategrey;
+}

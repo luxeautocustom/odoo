@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <menuitem name="Documentation"
+              id="menu_documentation"
+              parent="knowsystem.menu_knowsystem_main"
+              sequence="200"
+              groups="knowsystem.group_knowsystem_editor"
+    />
+    <menuitem name="Documentation Sections"
+              id="menu_documentation_sections"
+              parent="menu_documentation"
+              action="documentation_builder.documentation_section_action"
+              sequence="10"
+              groups="knowsystem.group_knowsystem_editor"
+    />
+    <menuitem name="Documentation Categories"
+              id="menu_documentation_categories"
+              parent="menu_documentation"
+              action="documentation_builder.documentation_category_action"
+              sequence="20"
+              groups="knowsystem.group_knowsystem_editor"
+    />
+    <menuitem name="Documentation Versioning"
+              id="menu_documentation_versions"
+              parent="menu_documentation"
+              action="documentation_builder.documentation_version_action"
+              sequence="30"
+              groups="documentation_builder.group_documentation_versioning"
+    />
+
+    
+
+</odoo>

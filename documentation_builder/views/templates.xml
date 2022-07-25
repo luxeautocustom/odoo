@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Portal entry -->
+    <template id="portal_my_home_docs" name="Portal My Home : docs" inherit_id="portal.portal_my_home" priority="200">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="website.documentation_builder_portal" t-call="portal.portal_docs_entry">
+                <t t-set="title">Documentation</t>
+                <t t-set="url" t-value="'/docs'"/>
+            </t>
+        </xpath>
+    </template>
+    <!-- Short section block -->
+    <template id="documentation_section" name="Documentation Section">
+        <div class="col-lg-3 pt16 pb16">
+            <div class="card bg-white doc_section_short ovf-hidden" t-attf-id="/docs/#{doc_section.id}">
+                <div id="image"/>
+                <div class="card-body pb0">
+                    <a t-attf-href="/docs/#{doc_section.id}" class="link_header">
+                        <h3 class="card-title" t-field="doc_section.name"/>
+                    </a>
+                    <div id="preview_text"/>
+                </div>
+            </div>
+        </div>
+    </template>
+    <!-- Short Section Option: show / hide description -->
+    <template id="documentation_section_description" inherit_id="documentation_builder.documentation_section" name="Preview Text" active="True" customize_show="True">
+        <xpath expr="//div[@id='preview_text']" position="replace">
+            <p class="card-text pb16">
+                <span t-field="doc_section.short_description"/>
+            </p>
+        </xpath>
+    </template>    
+    <!-- Short Section Option: show / hide image -->
+    <template id="documentation_section_img" inherit_id="documentation_builder.documentation_section" name="Cover Image" active="True" customize_show="True">
+        <xpath expr="//div[@id='image']" position="replace">
+            <div class="mhe-78">
+                <span t-field="doc_section.image_1920"
+                      class="ovf-hidden"  
+                      t-options="{'widget': 'image',}"
+                      t-attf-alt="Cover for #{doc_section.name}"
+                />
+            </div>
+        </xpath>
+    </template>
+    <!-- Documentation category section -->
+    <template id="documentation_category" name="Documentation Category">
+        <section class="pt32 pb32">
+            <div class="container">
+                <div class="row d-flex align-items-scretch">
+                    <div class="col-lg-12">
+                        <h2><t t-out="doc_category.name"/></h2>
+                    </div>
+                    <t t-foreach="doc_category.get_sections_with_context()" t-as="doc_section">
+                        <t t-call="documentation_builder.documentation_section"/>
+                    </t>
+                </div>
+            </div>
+        </section>  
+    </template>
+    <!-- Documentation overview page -->
+    <template id="documentation_overview" name="Documentation Overview">
+        <t t-call="website.layout">
+            <t t-set="pageName" t-value="'Documentation Overview'"/>
+            <div id="intro"/>
+            <t t-if="categories">
+                <div id="doc_sections_content">
+                    <t t-foreach="categories" t-as="doc_category">
+                        <t t-call="documentation_builder.documentation_category"/>
+                    </t>
+                </div>
+            </t>
+            <t t-else="">
+                <section class="pt32 pb32">
+                    <div class="container">
+                        <div class="row d-flex align-items-scretch">
+                            <h4>No documentation found</h4>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </t>
+    </template>
+    <!-- Documentation overview option: show / hide introduction -->
+    <template id="documentation_overview_intro" inherit_id="documentation_builder.documentation_overview" name="Introduction" active="True" customize_show="True">
+        <xpath expr="//div[@id='intro']" position="replace">
+            <div id="intro"  class="oe_structure oe_empty" contenteditable="true" itemprop="description" />
+        </xpath>
+    </template>
+    <!-- Documentation overview introduction option: show / hide searchbar -->
+    <template id="documentation_overview_searchbar" inherit_id="documentation_builder.documentation_overview" name="Searchbar" active="False" customize_show="True">
+        <xpath expr="//div[@id='intro']" position="after">
+            <div class="container mt18 hidden_under1000">
+                <nav class="navbar navbar-expand-lg docu-navbar-expand navbar-light shadow-sm">
+                    <form method="GET" class="form-inline col-lg-6 col-md-6" t-attf-action="/docs" role="search">
+                        <div class="input-group docu-input-group">
+                            <input type="search"
+                                   name="search" 
+                                   class="form-control" 
+                                   placeholder="Search" 
+                                   aria-label="Search" 
+                                   t-att-value="docu_section_search"
+                            />
+                            <div class="input-group-append">
+                                <button class="btn border border-left-0 oe_search_button" 
+                                        type="submit" 
+                                        aria-label="Search"
+                                        title="Search"
+                                >
+                                    <i class="fa fa-search"/>
+                                </button>
+                                <a class="btn border border-left-0 oe_search_button" 
+                                        href="/docs" 
+                                        aria-label="Search"
+                                        title="Search"
+                                >
+                                    <i class="fa fa-times"/>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </nav>
+            </div>
+        </xpath>
+    </template>
+    <!-- Warning if no access -->
+    <template id="docu_access_warning" name="Article Access Warning">
+        <div>                                           
+            <div class="mb32 pt32 text-center warning_section">
+                <div class="mb8">
+                    <span class="fa fa-5x fa-lock"> </span>
+                </div>
+                <div class="fa docu_access_label mt16">
+                    <strong>Restricted Access</strong>
+                </div>
+            </div>
+        </div>      
+    </template>  
+    <!-- Documentation page: Dynamic -->
+    <template id="content_template" name="Documentation Content Dynamic">
+        <t t-if="main_object.article_ids">
+            <t t-foreach="main_object.article_ids" t-as="article_id">
+                <t t-set="proper_version" t-value="not versioning_option or not article_id.sudo().version_ids or current_version in article_id.sudo().version_ids.ids"/>
+                <t t-if="proper_version">
+                    <t t-set="mode" t-value="main_object.get_access_method(article_id, 'read', request.website)"/>
+                    <t t-if="mode in ['sudo', 'warning']">
+                        <t t-set="article" t-value="article_id.with_context(docu_builder=True).sudo().article_id"/>
+                        <div>                                           
+                            <div class="mb32 mt4 text-center">
+                                <hr/>
+                                <t t-if="article.published_name">
+                                    <h2 t-out="article.published_name" 
+                                        t-attf-id="#{article.anchor_href}-#{article_id_index}"
+                                        actheader="1"
+                                    />
+                                </t>
+                                <t t-else="">
+                                    <h2 t-out="article.name" 
+                                        t-attf-id="#{article.anchor_href}-#{article_id_index}"
+                                        actheader="1"
+                                    />
+                                </t>
+                                <hr/>
+                            </div>
+                            <t t-if="mode=='sudo'">
+                                <div t-out="article.description_arch"
+                                     class="article_content_section"
+                                     t-attf-hrefid="#{article.anchor_href}-#{article_id_index}"
+                                     t-attf-id="#{article.id}-#{article_id_index}"
+                                /> 
+                                <div t-if="website.docu_attachments_show and article.attachment_ids" class='col-md-12'>
+                                    <div class='row'>
+                                        <div class="text-center oe_attachments"
+                                             t-foreach='article.attachment_ids'
+                                             t-as='attachment'
+                                        >
+                                            <a t-attf-href="/web/content/#{attachment.id}?download=true&amp;access_token=#{attachment.sudo().access_token}"
+                                               target="_blank"
+                                            >
+                                                <div class='oe_attachment_embedded o_image o_image_small'
+                                                     t-att-title="attachment.name"
+                                                     t-att-data-mimetype="attachment.mimetype"
+                                                />
+                                                <div class='oe_attachment_name'>
+                                                    <t t-out="len(attachment.name) &lt; 11 and attachment.name or attachment.name[0:9]+'...'"/>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                            <t t-else="mode=='warning'">
+                                <t t-call="documentation_builder.docu_access_warning"/>
+                            </t>                        
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+        <t t-else="">
+            <h4>
+                There is no documentation content available
+            </h4>
+        </t>
+    </template>
+    <!-- Documentation page: Static. SHOULD ALWAYS HAVE THE SAME STRUCTURE! -->
+    <template id="content_template_static" name="Documentation Content Static">
+        <t t-if="main_object.article_ids">
+            <t t-foreach="main_object.article_ids" t-as="article_id">
+                <t t-set="proper_version" t-value="not versioning_option or not article_id.sudo().version_ids or current_version in article_id.version_ids.ids"/>
+                <t t-if="proper_version">
+                    <t t-set="mode" t-value="main_object.get_access_method(article_id, 'write', request.website)"/>
+                    <t t-if="mode in ['sudo', 'warning']">
+                        <t t-set="article" t-value="article_id.sudo().article_id"/>
+                        <div>                                           
+                            <div class="mb32 mt4 text-center">
+                                <hr/>
+                                <t t-if="article.published_name">
+                                    <h2 t-if="mode=='sudo' and edit_website_possible" t-field="article.published_name"/>
+                                    <h2 t-if="mode=='warning' or (not edit_website_possible and mode=='sudo')" t-out="article.published_name"/>
+                                </t>
+                                <t t-else="">
+                                    <h2 t-if="mode=='sudo' and edit_website_possible" t-field="article.name"/>
+                                    <h2 t-if="mode=='warning' or (not edit_website_possible and mode=='sudo')" t-out="article.name"/>
+                                </t>
+                                <hr/>
+                            </div>
+                            <t t-if="mode=='sudo'">
+                                <div t-field="article.description_arch"
+                                     class="article_content_section"
+                                     t-if="edit_website_possible"
+                                /> 
+                                <div t-out="article.description_arch"
+                                     class="article_content_section"
+                                     t-if="not edit_website_possible"
+                                /> 
+                            </t>
+                            <t t-else="mode=='warning'">
+                                <t t-call="documentation_builder.docu_access_warning"/>
+                            </t> 
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+        <t t-else="">
+            <h4>
+                There is no documentation content available
+            </h4>
+        </t>
+    </template>
+    <template id="documentation" name="Documentation">
+        <t t-call="website.layout">
+            <div id="intro"/>
+            <div id="documentation_main_container">
+                <!-- Technical -->
+                <span t-out="main_object.return_headers_depth()" 
+                      id="nav_header_depth"
+                      class="knowsystem_hidden"
+                />
+                <section id="docu_searchbar_section"/>
+                <section class="bg-200">
+                    <div class="container">
+                        <div class="row bg-white pt16 pb32">
+                            <!-- one show in read mode, migh be adapted with further styles (e.g. toc anchors,
+                            highlights)  -->
+                            <div id="documentation_content" class="css_editable_mode_hidden col-lg-12">
+                                <t t-call="documentation_builder.content_template"/>
+                            </div>
+                            <!-- one shown in edit mode  -->
+                            <div id="static_document_content" class="css_non_editable_mode_hidden col-lg-12">
+                                <t t-call="documentation_builder.content_template_static"/>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div id="footer"/>
+        </t>
+    </template>
+    <!-- Documentation page option: show / hide navigation -->
+    <template id="documentation_navigation" inherit_id="documentation_builder.documentation" name="Navigation" active="True" customize_show="True">
+        <xpath expr="//div[@id='documentation_content']" position="attributes">
+            <attribute name="class">col-lg-9 css_editable_mode_hidden</attribute>
+        </xpath>
+        <xpath expr="//div[@id='documentation_content']" position="before">
+            <div class="col-lg-3 css_editable_mode_hidden hidden_under1000 pt16" 
+                 id="documentation_navigation"
+                 t-if="main_object.article_ids"
+            >
+                <div id="nav_sticky" >
+                    <div class="text-right">
+                        <i class="fa fa-dedent text-muted nav-icon" id="hide_docu_navigation"></i>
+                        <i class="fa fa-chevron-up text-muted nav-icon knowsystem_hidden" id="scroll_top"></i>
+                    </div>
+                    <ul id="navigation_ul">
+                        <t t-foreach="main_object.article_ids" t-as="article_id">
+                            <t t-set="proper_version" t-value="not versioning_option or not article_id.sudo().version_ids or current_version in article_id.version_ids.ids"/>
+                            <t t-if="proper_version">
+                                <t t-set="mode" t-value="main_object.get_access_method(article_id, 'read', request.website)"/>
+                                <t t-if="mode in ['sudo', 'warning']">
+                                    <t t-set="article_nav" t-value="article_id.sudo().article_id"/>
+                                    <li t-attf-id="article_entry_#{article_nav.id}-#{article_id_index}" 
+                                        class="main_nav_entry docu_nav_li"
+                                    >
+                                        <a t-attf-href="##{article_nav.anchor_href}-#{article_id_index}" 
+                                           class="anchor_entry"
+                                        >
+                                            <t t-out="article_nav.action_get_published_name()"/>
+                                        </a>
+                                    </li>
+                                </t>
+                            </t>
+                        </t>
+                    </ul>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <!-- Documentation page option: show / hide searchbar --> 
+    <template id="documentation_section_searchbar" inherit_id="documentation_builder.documentation" name="Searchbar" active="True" customize_show="True">
+        <xpath expr="//section[@id='docu_searchbar_section']" position="replace">
+            <section id="docu_searchbar_section" class="bg-200 pt8 pb8 css_editable_mode_hidden">
+                <div class="container">
+                    <div class="row pt8 pb8 rounded bg-white">
+                        <div class="col-lg-4" id="searchbar_versioning">
+                            <span t-out="main_object.name" 
+                                  class="form-control-sm ovf-hidden line-doc-2"
+                            />
+                        </div>
+                        <div class="col-lg-2" id="searchbar_priting">
+                        </div>
+                        <div id="docu_search_bar" class="col-lg-6"/>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+    </template>       
+    <!-- Searchbar option: show / hide versioning -->
+    <template id="documentation_section_searchbar_versioning" inherit_id="documentation_builder.documentation_section_searchbar" name="Searchbar Versioning" active="True" customize_show="True">
+        <xpath expr="//div[@id='searchbar_versioning']" position="replace">
+            <div id="searchbar_versioning" class="col-lg-4">
+                <div class="input-group input-group-sm w-100">
+                    <div class="input-group-prepend">            
+                        <button type="button" 
+                                class="btn btn-secondary dropdown-toggle " 
+                                data-toggle="dropdown"
+                                t-if="available_versions"
+                        >
+                            <span t-out="current_version_name"></span>
+                        </button>
+                        <div class="dropdown-menu" 
+                             role="menu"
+                             t-if="available_versions"
+                        >
+                            <t t-foreach="available_versions" t-as="version">
+                                <a t-attf-href="/#{url_main}/#{version[0]}/#{main_object.id}?#{keep_query()}"
+                                   t-attf-class="dropdown-item docu_version #{version[0] == current_version and 'active' or ''}"
+                                   t-attf-id="#{version[0]}" 
+                                >
+                                    <span t-out="version[1]"/>
+                                </a>                        
+                            </t>
+                        </div>
+                        <span t-out="main_object.name" class="form-control-sm ovf-hidden line-doc-2"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>  
+    <!-- Searchbar option: show / hide printing button -->
+    <template id="documentation_section_searchbar_printing" inherit_id="documentation_builder.documentation_section_searchbar" name="Searchbar Priting" active="False" customize_show="True">
+        <xpath expr="//div[@id='searchbar_priting']" position="replace">
+            <div id="searchbar_priting" class="col-lg-2">
+                <a class="inline_button text-secondary" t-attf-href="/docs/#{current_version}/#{main_object.id}/download/#{section_safe_name}?#{keep_query()}" target="_blank" t-if="section_safe_name">
+                    <i class="fa fa-print"> </i> Save as PDF
+                </a>        
+            </div>
+        </xpath>
+    </template> 
+    <!-- Searchbar option: show / hide search -->
+    <template id="documentation_section_searchbar_search" inherit_id="documentation_builder.documentation_section_searchbar" name="Searchbar Search" active="True" customize_show="True">
+        <xpath expr="//div[@id='docu_search_bar']" position="replace">
+            <div class="col-lg-6 hidden_under1000" id="docu_search_bar">
+                <form class="form-inline o_portal_search_panel_docs lg-6" onSubmit="return false;">
+                    <div class="input-group input-group-sm w-100">
+                        <div class="input-group-prepend">
+                            <button type="button" 
+                                    class="btn btn-secondary dropdown-toggle" 
+                                    data-toggle="dropdown"
+                            />
+                            <div class="dropdown-menu" role="menu">
+                                <a class="dropdown-item active docu_search_selection"
+                                   id="docu_search_default" 
+                                >
+                                    <span>Default Search</span>
+                                </a>
+                                <a class="dropdown-item docu_search_selection"
+                                   id="docu_search_case_sensitive" 
+                                >
+                                    <span>Case Sensitive Search</span>
+                                </a>
+                                <a class="dropdown-item docu_search_selection"
+                                   id="docu_search_headers" 
+                                >
+                                    <span>Search in Headers only</span>
+                                </a>
+                            </div>
+                        </div>
+                        <input type="text" 
+                               class="form-control form-control-sm" 
+                               placeholder="Search" 
+                               id="docu_search_key"
+                        />
+                        <span class="input-group-append">
+                            <button class="btn btn-secondary" type="button" id="docu_do_search">
+                                <span class="fa fa-search"/>
+                            </button>
+                            <span id="docu_search_results" class="knowsystem_hidden ml16 hidden_mobile">
+                                <span class="fa mr8 ml0 text-muted">
+                                    Matches: <span id="search_matches_num"/>
+                                </span>
+                                <button class="btn btn-sm btn-outline-primary mr0 ml0 search_docu_navigation" 
+                                        type="button"
+                                        id="next_docu_search"
+                                        title="next"
+                                >
+                                    <span class="fa fa-angle-double-down mr0 ml0"/>
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary mr0 ml0 search_docu_navigation" 
+                                        type="button"
+                                        id="previous_docu_search"
+                                        title="previous" 
+                                >
+                                    <span class="fa fa-angle-double-up mr0 ml0"/>
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary mr0 ml0" 
+                                        type="button"
+                                        id="clear_docu_search"
+                                        title="clear search"
+                                >
+                                    <span class="fa fa-remove mr0 ml0"/>
+                                </button>
+                            </span>
+                        </span>
+                    </div>
+                </form>   
+                <div id="docu_search_results" class="lg-6  text-beta text-center"> </div>                           
+            </div>
+        </xpath>
+    </template>
+    <!-- Documentation page option: show / hide introduction -->
+    <template id="documentation_section_intro" inherit_id="documentation_builder.documentation" name="Introduction" active="True" customize_show="True">
+        <xpath expr="//div[@id='intro']" position="replace">
+            <div t-field="main_object.introduction"
+                 id="intro" 
+            />
+        </xpath>
+    </template>
+    <!-- Documentation page option: show / hide footer -->
+    <template id="documentation_section_footer" inherit_id="documentation_builder.documentation" name="Footer" active="True" customize_show="True">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <div t-field="main_object.footer" id="footer" />
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_documentation_versioning" model="res.groups">
+        <field name="name">Documentation Versioning</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <data noupdate="0">
+        <record id="documentation_section_public" model="ir.rule">
+            <field name="name">Public users - Documentation.Section - Read published</field>
+            <field name="model_id" ref="documentation_builder.model_documentation_section"/>
+            <field name="domain_force">[
+                ("active", "=", True),
+                ('website_published', '=', True),
+            ]</field>
+            <field name="groups" eval="[(4, ref('base.group_public'))]"/>
+        </record>
+        <record id="documentation_section_portal" model="ir.rule">
+            <field name="name">Portal users - Documentation.Section - Read published or tag-related</field>
+            <field name="model_id" ref="documentation_builder.model_documentation_section"/>
+            <field name="domain_force">[
+                ("active", "=", True),
+                "|",
+                    ('website_published', '=', True),
+                    ("portal_has_right_to", "=", user.id),
+            ]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        </record>
+        <record id="documentation_category_portal" model="ir.rule">
+            <field name="name">Portal and Public Users - Documentation.Category - Read published</field>
+            <field name="model_id" ref="documentation_builder.model_documentation_category"/>
+            <field name="domain_force">[
+                ("active", "=", True),
+                ('website_published', '=', True),
+            ]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal')), (4, ref('base.group_public'))]"/>
+        </record>
+        <record id="documentation_version_portal" model="ir.rule">
+            <field name="name">Portal and Public Users - Documentation.Version - Read published</field>
+            <field name="model_id" ref="documentation_builder.model_documentation_version"/>
+            <field name="domain_force">[
+                ("active", "=", True),
+                ('website_published', '=', True),
+            ]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal')), (4, ref('base.group_public'))]"/>
+        </record>
+    </data>
+
+</odoo>

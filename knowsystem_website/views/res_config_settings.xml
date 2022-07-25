@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.cloud.knowsystem.website</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="knowsystem.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <div id="knowsystem_extra_options" position="after">
+                <h2 attrs="{'invisible': [('module_knowsystem_website', '=', False)]}">
+                    Portal and Website Views
+                </h2>
+                <div id="knowsystem_website_options_1" class="row mt16 o_settings_container" attrs="{'invisible': [('module_knowsystem_website', '=', False)]}">
+                    <div class="col-12 col-lg-6 o_setting_box" 
+                         groups="website.group_multi_website"
+                    >
+                        <div name="know_website" class="o_setting_left_pane"> </div>
+                        <div name="know_website_2" class="o_setting_right_pane">
+                            <label for="knowsystem_website_id"/>
+                            <div name="bknow_website_option_hint" class="text-muted">
+                                Select website to configure KnowSystem
+                            </div>
+                            <field name="knowsystem_website_id" options="{'no_create_edit': 1, 'no_quick_create': 1}" />
+                        </div>
+                    </div>
+                    <div name="portal_option"
+                         class="col-xs-12 col-md-6 o_setting_box"
+                         attrs="{'invisible': ['|', ('module_knowsystem_website', '=', False), ('knowsystem_website_id', '=', False)]}"
+                    >
+                        <div name="portal_option_1" class="o_setting_left_pane">
+                            <field name="knowsystem_website_portal"/>
+                        </div>
+                        <div name="portal_option_2" class="o_setting_right_pane">
+                            <label for="knowsystem_website_portal"/>
+                            <div name="portal_option_hint" class="text-muted">
+                                Let portal users observe published and especially delegated to them articles
+                            </div>
+                        </div>
+                        <div name="public_option_1" 
+                             class="o_setting_left_pane"
+                             attrs="{'invisible': ['|', ('knowsystem_website_portal', '=', False), ('knowsystem_website_id', '=', False)]}"
+                        >
+                            <field name="knowsystem_website_public"/>
+                        </div>
+                        <div name="public_option_2" 
+                             class="o_setting_right_pane"
+                             attrs="{'invisible': ['|', ('knowsystem_website_portal', '=', False), ('knowsystem_website_id', '=', False)]}"
+                        >
+                            <label for="knowsystem_website_public"/>
+                            <div name="public_option_hint" class="text-muted">
+                                Let unauthorized website visitors to read published articles
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt16 o_settings_container"
+                     id="knowsystem_website_options_2"
+                     attrs="{'invisible': ['|', ('knowsystem_website_portal', '=', False), ('knowsystem_website_id', '=', False)]}"
+                >
+                    <div name="public_filters_option" class="col-xs-12 col-md-6 o_setting_box">
+                        <div name="public_filters_option_1" class="o_setting_left_pane"> </div>
+                        <div name="public_filters_option_2" class="o_setting_right_pane">
+                            <label for="knowsystem_portal_filters_ids"/>
+                            <div name="public_filters_hint">
+                                <field name="knowsystem_portal_filters_ids"
+                                       context="{'default_model_id': 'knowsystem.article'}"
+                                       domain="[('model_id', '=', 'knowsystem.article')]"
+                                       class="w-100"
+                                >
+                                    <tree>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                    </div>
+                    <div name="public_search_option" class="col-xs-12 col-md-6 o_setting_box">
+                        <div name="public_search_option_1" class="o_setting_left_pane"> </div>
+                        <div name="public_search_option_2" class="o_setting_right_pane">
+                            <label for="knowsystem_custom_search_ids"/>
+                            <div name="public_filters_hint">
+                                <field name="knowsystem_custom_search_ids" class="w-100">
+                                    <tree>
+                                        <field name="custom_field_id"/>
+                                        <field name="name"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <field name="custom_field_id" options="{'no_create_edit': 1, 'no_quick_create': 1}" />
+                                                <field name="name"/>                                                    
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </div>
+                        </div>
+                    </div>
+                    <div name="public_sort_option" class="col-xs-12 col-md-6 o_setting_box">
+                        <div name="public_sort_option_1" class="o_setting_left_pane"> </div>
+                        <div name="public_sort_option_2" class="o_setting_right_pane">
+                            <label for="knowsystem_custom_sorts_ids"/>
+                            <div name="public_filters_hint">
+                                <field name="knowsystem_custom_sorts_ids" class="w-100">
+                                    <tree>
+                                        <field name="custom_field_id"/>
+                                        <field name="name"/>
+                                        <field name="order_sort"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <field name="custom_field_id"/>
+                                                <field name="name"/>
+                                                <field name="order_sort"/>                                
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </div>
+                        </div>
+                    </div> 
+                    <div name="default_sort_setup" class="col-12 col-lg-6 o_setting_box">
+                        <div name="default_sort_option" class="o_setting_left_pane"> </div>
+                        <div name="default_sort_option_2" class="o_setting_right_pane">
+                            <label for="knowsystem_default_sort_option"/>
+                            <field name="knowsystem_default_sort_option" />
+                        </div>
+                        <div name="default_sort_option_2" class="o_setting_right_pane" attrs="{'invisible': [('knowsystem_default_sort_option', '!=', 'default')]}">
+                            <label for="knowsystem_default_sort"/>
+                            <field name="knowsystem_default_sort"/>
+                        </div>
+                        <div name="knowsystem_default_sort_id" class="o_setting_right_pane" attrs="{'invisible': [('knowsystem_default_sort_option', '!=', 'custom')]}">
+                            <label for="knowsystem_default_sort_id"/>
+                            <field name="knowsystem_default_sort_id" options="{'no_create_edit': 1, 'no_quick_create': 1}" />
+                        </div>
+                    </div>                  
+                    <div name="public_print_option" class="col-xs-12 col-md-6 o_setting_box">
+                        <div name="public_print_option_1" class="o_setting_left_pane">
+                            <field name="knowsystem_portal_print"/>
+                        </div>
+                        <div name="public_print_option_2" class="o_setting_right_pane">
+                            <label for="knowsystem_portal_print"/>
+                            <div name="public_print_option_hint" class="text-muted">
+                                Let portal and public users print articles
+                            </div>
+                        </div>
+                    </div>
+                    <div name="public_likes_option" class="col-xs-12 col-md-6 o_setting_box">
+                        <div name="public_likes_option_1" class="o_setting_left_pane">
+                            <field name="knowsystem_portal_likes"/>
+                        </div>
+                        <div name="public_likes_option_2" class="o_setting_right_pane">
+                            <label for="knowsystem_portal_likes"/>
+                            <div name="public_like_option_hint" class="text-muted">
+                                Let portal users like and dislike articles
+                            </div>
+                        </div>
+                    </div>
+                    <div name="portal_sharing_option" class="col-xs-12 col-md-6 o_setting_box">
+                        <div name="portal_sharing_option_option_1" class="o_setting_left_pane">
+                            <field name="knowsystem_portal_social_share"/>
+                        </div>
+                        <div name="portal_sharing_option_option_2" class="o_setting_right_pane">
+                            <label for="knowsystem_portal_social_share"/>
+                            <div name="portal_sharing_option_hint" class="text-muted">
+                                Let portal and public users share articles in social media
+                            </div>
+                        </div>
+                    </div>
+                    <div name="tooltips_option" class="col-xs-12 col-md-6 o_setting_box">
+                        <div name="tooltips_option_1" class="o_setting_left_pane">
+                            <field name="knowsystem_portal_tooltip"/>
+                        </div>
+                        <div name="tooltips_option_2" class="o_setting_right_pane">
+                            <label for="knowsystem_portal_tooltip"/>
+                            <div name="tooltips_option_hint" class="text-muted">
+                                Show sections and tags description on website as help mouse-over hints.
+                            </div>
+                        </div>
+                    </div>     
+                    <div name="pager_knowsystem_option" class="col-xs-12 col-md-6 o_setting_box">
+                        <div name="pager_knowsystem_option_1" class="o_setting_left_pane">
+                            <field name="pager_knowsystem"/>
+                        </div>
+                        <div name="ager_knowsystem_option_2" class="o_setting_right_pane">
+                            <label for="pager_knowsystem"/>
+                            <div name="pager_knowsystem_hint" class="text-muted">
+                                How many articles should be shown for each portal page.
+                            </div>
+                        </div>
+                    </div>                                        
+                </div>
+            </div>
+        </field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="knowsystem_article_view_search" model="ir.ui.view">
+        <field name="name">knowsystem.article.search.website</field>
+        <field name="model">knowsystem.article</field>
+        <field name="inherit_id" ref="knowsystem.knowsystem_article_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="inactive" position="before">
+                <separator/>
+                <filter name="published" string="Published" domain="[('website_published', '=', True)]"
+                />
+                <filter name="not_published" string="Not published" domain="[('website_published', '=', False)]"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
+    <record id="knowsystem_article_view_form_viewer" model="ir.ui.view">
+        <field name="name">knowsystem.article.form.viewer</field>
+        <field name="model">knowsystem.article</field>
+        <field name="inherit_id" ref="knowsystem.knowsystem_article_view_form_viewer"/>
+        <field name="arch" type="xml">
+            <field name="section_id" position="after">
+                <field name="published_name"
+                       placeholder="published title"
+                       required="0"
+                       nolabel="1"
+                       class="oe_edit_only"
+                       colspan="6"
+                />
+                <field name="website_id"
+                       options="{'no_create_edit': 1, 'no_quick_create': 1,}"
+                       groups="website.group_multi_website"
+                       placeholder="website"
+                       required="0"
+                       nolabel="1"
+                       class="oe_edit_only"
+                       colspan="6"
+                />
+            </field>
+            <field name="attachment_ids" position="before">
+                <field name="website_pinned" nolabel="1"/>   
+                <label for="website_pinned"/>            
+            </field>
+        </field>
+    </record>
+    <record id="knowsystem_article_view_form_info" model="ir.ui.view">
+        <field name="name">knowsystem.article.form.info.website</field>
+        <field name="model">knowsystem.article</field>
+        <field name="inherit_id" ref="knowsystem.knowsystem_article_view_form_info"/>
+        <field name="arch" type="xml">
+            <field name="internal_url" position="before">
+                <field name="website_published" readonly="1" string="Published"/>
+                <field name="website_url" readonly="1" widget="url"/>
+            </field>
+            <field name="internal_url" position="after">
+                <button name="%(portal.portal_share_action)d" 
+                        string="Share" 
+                        type="action" 
+                        class="oe_highlight oe_read_only"
+                />       
+            </field>
+        </field>
+    </record>
+
+</odoo>

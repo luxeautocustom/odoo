@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Articles -->
+    <record id="knowsystem_article_public" model="ir.rule">
+        <field name="name">Public users - KnowSystem.Article - Read published</field>
+        <field name="model_id" ref="knowsystem.model_knowsystem_article"/>
+        <field name="domain_force">[
+            ("active", "=", True),
+            ('website_published', '=', True),
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_public'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="knowsystem_article_portal" model="ir.rule">
+        <field name="name">Portal users - KnowSystem.Article - Read published or tag-related</field>
+        <field name="model_id" ref="knowsystem.model_knowsystem_article"/>
+        <field name="domain_force">[
+            ("active", "=", True),
+            "|",
+                ('website_published', '=', True),
+                ("portal_has_right_to", "=", user.id),
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <!-- Sections -->
+    <record id="knowsystem_section_public" model="ir.rule">
+        <field name="name">Public and portal users - KnowSystem.Section - Read published</field>
+        <field name="model_id" ref="knowsystem.model_knowsystem_section"/>
+        <field name="domain_force">[
+            ("active", "=", True),
+        ]</field>
+        <field name="groups" eval="[(4, ref('base.group_public')), (4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <!-- Tags -->
+    <record id="knowsystem_tag_public" model="ir.rule">
+        <field name="name">Public and portal users - KnowSystem.Tag - Read published</field>
+        <field name="model_id" ref="knowsystem.model_knowsystem_tag"/>
+        <field name="domain_force">[("website_published", "=", True),]</field>
+        <field name="groups" eval="[(4, ref('base.group_public')), (4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+</odoo>

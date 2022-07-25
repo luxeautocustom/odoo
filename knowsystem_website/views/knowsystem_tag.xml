@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="knowsystem_tag_view_form" model="ir.ui.view">
+        <field name="name">knowsystem.tag.form.website</field>
+        <field name="model">knowsystem.tag</field>
+        <field name="inherit_id" ref="knowsystem.knowsystem_tag_view_form"/>
+        <field name="arch" type="xml">
+            <field name="sequence" position="after">
+                <field name="website_published"/>
+                <field name="partner_ids"
+                       widget="many2many_tags"
+                       options="{'no_create_edit': 1, 'no_quick_create': 1}"
+                />
+                <field name="website_id"
+                       options="{'no_create_edit': 1, 'no_quick_create': 1,}"
+                       groups="website.group_multi_website"
+                />
+            </field>
+        </field>
+    </record>
+
+    <record id="knowsystem_tag_publish" model="ir.actions.server">
+        <field name="name">Website Publish</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="knowsystem.model_knowsystem_tag"/>
+        <field name="binding_model_id" ref="knowsystem.model_knowsystem_tag"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    records.action_website_publish()
+        </field>
+    </record>
+
+    <record id="knowsystem_tag_ubpublish" model="ir.actions.server">
+        <field name="name">Website Unpublish</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="knowsystem.model_knowsystem_tag"/>
+        <field name="binding_model_id" ref="knowsystem.model_knowsystem_tag"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    records.action_website_unpublish()
+        </field>
+    </record>
+
+</odoo>

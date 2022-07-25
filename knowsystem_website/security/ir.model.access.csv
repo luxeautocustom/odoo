@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_knowsystem_article_public,access_knowsystem_article_public,knowsystem.model_knowsystem_article,,1,0,0,0
+access_knowsystem_section_public,access_knowsystem_section_public,knowsystem.model_knowsystem_section,,1,0,0,0
+access_knowsystem_tag_public,access_knowsystem_tag_public,knowsystem.model_knowsystem_tag,,1,0,0,0
+access_knowsystem_custom_search_piblic,access_knowsystem_custom_search_public,knowsystem.model_knowsystem_custom_search,,1,0,0,0
+access_knowsystem_custom_sort_piblic,access_knowsystem_custom_sort_public,knowsystem.model_knowsystem_custom_sort,,1,0,0,0

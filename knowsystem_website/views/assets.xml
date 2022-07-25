@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="knowsystem_iframe_css_assets_edit" inherit_id="knowsystem.knowsystem_iframe_css_assets_edit">
+        <xpath expr="t[last()]" position="after">
+            <t t-call-assets="website.assets_frontend"/>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="KnowRightNavigationPanel">
+        <t t-jquery="div[t-if='right_for_delete']" t-operation="after">
+            <div t-if="right_for_delete">
+                <span class="documentation_articles_add know_functional_button">
+                    <i class="fa fa-dedent"></i> Add to documentation
+                </span>
+            </div>            
+        </t>
+    </t>
+
+</templates>

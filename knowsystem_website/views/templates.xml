@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_layout" name="Portal layout: KnowSystem" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'KnowSystem' or article_id" t-attf-class="breadcrumb-item #{'active ' if not article_id else ''}">
+                <a t-if="article_id" t-attf-href="/knowsystem?{{ keep_query() }}">KnowSystem</a>
+                <t t-else="">KnowSystem</t>
+            </li>
+            <li t-if="article_id" class="breadcrumb-item active">
+                <t t-out="article_id.action_get_published_name()"/>
+            </li>
+        </xpath>
+    </template>
+    <template id="know_article_list_box" name="Article preview box">
+        <div t-attf-class="col-md-12 mt16 knowsystem_box #{article.website_pinned and 'bg-white-50' or ''}">
+            <div class="pull-right" t-if="portal_likes or article.website_pinned">
+                <t t-if="article.website_pinned">
+                    <i class="fa fa-thumb-tack text-gamma mr8" title="pinned article"> </i>
+                </t>
+                <t t-if="portal_likes">
+                    <span t-attf-class="#{article.this_user_like_state == 'like' and 'done_like' or 'not_done_like'}">
+                        <span class="o_default_snippet_text">
+                            <span><t t-out="article.likes_number"/></span>
+                            <i class="fa fa-thumbs-up"> </i>
+                        </span>
+                    </span>
+                    <span t-attf-class="#{article.this_user_like_state == 'dislike' and 'done_like' or 'not_done_like'}">
+                        <span class="o_default_snippet_text">
+                            <span><t t-out="article.dislikes_number"/></span>
+                            <i class="fa fa-thumbs-down"> </i>
+                        </span>
+                    </span>
+                </t>
+            </div>
+            <h4>
+                <a t-attf-href="/knowsystem/#{article.id}?#{keep_query()}">
+                    <t t-out="article.action_get_published_name()"/>
+                </a>
+            </h4>
+            <p>
+                <i>
+                    <t t-if="article.kanban_manual_description">
+                        <div class="css_editable_mode_hidden" t-out="article.kanban_manual_description"/>
+                    </t>
+                    <t t-else="">
+                        <div class="css_editable_mode_hidden" t-out="article.kanban_description"/>
+                    </t>
+                    <div class="css_non_editable_mode_hidden" t-field="article.kanban_manual_description"/>
+                </i>
+            </p>
+            <div t-if="article.tag_ids" class="">
+                <t t-foreach="article.tag_ids" t-as="tag">
+                    <span t-if="tag.website_published" class="badge badge-pill badge-info">
+                        <span t-field="tag.name"/>
+                    </span>
+                </t>
+            </div>
+        </div>
+    </template>
+    <template id="knowsystem" name="KnowSystem">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">KnowSystem</t>
+                <div class="knowsystem_sides">
+                    <t t-call="portal.pager"/>
+                </div>
+            </t>
+            <div class="container">
+                <div class="row">
+                    <div id="knowsystem_first_div" t-if="not article_ids and not pinned_articles" class="col-md-12 col-sm-8 mt16 alert alert-info">
+                        There are no articles found. <a href="/knowsystem">Clear search</a>
+                    </div>
+                    <div id="knowsystem_articles" t-if="article_ids or pinned_articles" class="col-md-12 col-sm-8">
+                        <div id="know_searches" t-if="done_search or done_filters" class="col-md-12 mt16 alert alert-info">
+                            <t t-if="done_search">
+                                Last search: "<t t-out="done_search"/>".
+                            </t>
+                            <t t-if="done_filters">
+                                Last filters: "<t t-out="done_filters"/>".
+                            </t>
+                            <a href="/knowsystem">Clear search</a>
+                        </div>
+                        <t t-if="pinned_articles">
+                            <t t-foreach="pinned_articles" t-as="article">
+                                <t t-call="knowsystem_website.know_article_list_box"/>
+                            </t>
+                        </t>
+                        <t t-if="article_ids">
+                            <t t-foreach="article_ids" t-as="article">
+                                <t t-call="knowsystem_website.know_article_list_box"/>
+                            </t>
+                            <div t-if="pager" class="o_portal_pager text-center mt16">
+                                <t t-call="portal.pager"/>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="sections" inherit_id="knowsystem_website.knowsystem" name="KnowSystem Navigator" active="True" customize_show="True">
+        <xpath expr="//div[@id='knowsystem_first_div']" position="before">
+            <div class="col-md-3 col-sm-4 col-xs-12 panel panel-default mt8">
+                <div id="left_navigation">
+                    <div class="col-md-12 knowsystem_sections_js_tree" id="sections_panel">
+                        <ul class="nav nav-pills nav-stacked mt8" t-if="section_ids and len(section_ids) != 2">
+                            <li>Sections</li>
+                        </ul>
+                        <div id="knowsystem_sections" t-att-data-id="section_ids" t-if="section_ids and len(section_ids) != 2"> </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@id='knowsystem_first_div']" position="attributes">
+            <attribute name="class">col-md-9 col-sm-8 mt16 alert alert-info</attribute>
+        </xpath>
+        <xpath expr="//div[@id='knowsystem_articles']" position="attributes">
+            <attribute name="class">col-md-9 col-sm-8</attribute>
+        </xpath>
+    </template>
+    <template id="know_tags" inherit_id="knowsystem_website.sections" name="KnowSystem Tags" active="True" customize_show="True">
+        <xpath expr="//div[@id='sections_panel']" position="after">
+            <div class="col-md-12 knowsystem_tags_js_tree">
+                <ul class="nav nav-pills nav-stacked mt8" t-if="tag_ids and len(tag_ids) != 2">
+                    <li>Tags</li>
+                </ul>
+                <div id="knowsystem_tags" t-att-data-id="tag_ids" t-if="tag_ids and len(tag_ids) != 2"> </div>
+            </div>
+        </xpath>
+    </template>
+    <template id="know_hints" inherit_id="knowsystem_website.sections" name="KnowSystem Left Introduction" active="False" customize_show="True">
+        <xpath expr="//div[@id='left_navigation']" position="after">
+            <div class="col-md-12 mt16 hidden_mobile">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 t-field="website.left_navigation_hints_header"/>
+                    </div>
+                    <div class="card-body">
+                        <div t-field="website.left_navigation_hints"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <template id="know_center_intoduction" inherit_id="knowsystem_website.sections" name="KnowSystem Center Introduction" active="False" customize_show="True">
+        <xpath expr="//div[@id='know_searches']" position="before">
+            <div class="col-md-12 mt8 mb8">
+                <div t-field="website.center_knowsystem_introduction"/>
+            </div>
+        </xpath>
+    </template>
+    <template id="knowsystem_article" name="KnowSystem Article">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title" t-value="article_id.action_get_published_name()"/>
+            <div class="container">
+                <div class="row knowsystem_big_box">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <h1>
+                                <t t-if="article_id.published_name">
+                                    <span t-field="article_id.published_name" t-if="edit_website_possible"/>
+                                    <span t-out="article_id.published_name" t-if="not edit_website_possible"/>
+                                </t>
+                                <t t-else="">
+                                    <span t-field="article_id.name" t-if="edit_website_possible"/>
+                                    <span t-out="article_id.name" t-if="not edit_website_possible"/>
+                                </t>
+                                <small t-if="print_portal">
+                                    <small>
+                                        <a class="inline_button" t-attf-href='/knowsystem/#{article_id.id}/download/#{article_safe_name}?#{keep_query()}' target="_blank">
+                                            <i class="fa fa-print"> </i>
+                                        </a>
+                                    </small>
+                                </small>
+                            </h1>
+                            <div t-if="article_id.tag_ids" class="">
+                                <t t-foreach="article_id.tag_ids" t-as="tag">
+                                    <span class="badge badge-pill badge-info">
+                                        <span t-field="tag.name"/>
+                                    </span>
+                                </t>
+                            </div>                            
+                        </div>
+                        <div class="col-md-12">
+                            <t t-out="article_id.description_arch" t-if="not edit_website_possible"/>
+                            <div t-field="article_id.description_arch" t-if="edit_website_possible"/>
+                        </div>
+                        <div t-if="article_id.sudo().attachment_ids" class='col-md-12 mt8'>
+                            <div class='row'>
+                                <div class="col-md-2 col-sm-3 text-center oe_attachments" t-foreach='article_id.sudo().attachment_ids' t-as='attachment'>
+                                    <a t-attf-href="/web/content/#{attachment.id}?download=true&amp;access_token=#{attachment.sudo().access_token}" target="_blank">
+                                        <div class='oe_attachment_embedded o_image o_image_small' t-att-title="attachment.name" t-att-data-mimetype="attachment.mimetype"/>
+                                        <div class='oe_attachment_name'>
+                                            <t t-out="len(attachment.name) &lt; 11 and attachment.name or attachment.name[0:9]+'...'"/>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt16" t-if="social_share">
+                            <div class="s_share">
+                                <a t-attf-href="https://www.facebook.com/sharer/sharer.php?u=#{article_id.website_url}" class="s_share_facebook" target="_blank">
+                                    <i class="fa fa-facebook rounded shadow-sm"></i>
+                                </a>
+                                <a t-attf-href="https://twitter.com/intent/tweet?text=#{article_id.action_get_published_name()}&amp;url=#{article_id.website_url}" class="s_share_twitter" target="_blank">
+                                    <i class="fa fa-twitter rounded shadow-sm"></i>
+                                </a>
+                                <a t-attf-href="http://www.linkedin.com/shareArticle?mini=true&amp;url=#{article_id.website_url}" class="s_share_linkedin" target="_blank">
+                                    <i class="fa fa-linkedin rounded shadow-sm"></i>
+                                </a>
+                                <a t-attf-href="mailto:?body=#{article_id.website_url}&amp;subject=#{article_id.action_get_published_name()}" class="s_share_email">
+                                    <i class="fa fa-envelope rounded shadow-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt16" t-if="not request.website.is_public_user() and portal_likes">
+                            <a t-attf-href="/knowsystem/like/#{article_id.id}?#{keep_query()}" t-attf-class="btn #{article_id.this_user_like_state == 'like' and 'btn-info' or 'btn-primary'}">
+                                <span class="o_default_snippet_text">
+                                    <span><t t-out="article_id.likes_number"/></span>
+                                    <i class="fa fa-thumbs-up"> </i>
+                                </span>
+                            </a>
+                            <a t-attf-href="/knowsystem/dislike/#{article_id.id}?#{keep_query()}" t-attf-class="btn #{article_id.this_user_like_state == 'dislike' and 'btn-info' or 'btn-primary'}">
+                                <span class="o_default_snippet_text">
+                                    <span><t t-out="article_id.dislikes_number"/></span>
+                                    <i class="fa fa-thumbs-down"> </i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="portal_my_home_knowsystem" name="Portal My Home : knowsystem" inherit_id="portal.portal_my_home" priority="200">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="show_portal" t-call="portal.portal_docs_entry">
+                <t t-set="title">KnowSystem</t>
+                <t t-set="url" t-value="'/knowsystem'"/>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

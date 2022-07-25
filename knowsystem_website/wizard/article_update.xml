@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<odoo>
+
+     <record id="article_update_form_view" model="ir.ui.view">
+        <field name="name">Update Article</field>
+        <field name="model">article.update</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="knowsystem.article_update_form_view"/>
+        <field name="arch" type="xml">
+            <field name="activate" position="after">
+                <field name="publish"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <template id="backend_stripe_acquirer_button">
+        <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me=""/>
+        <input type='hidden' name='session_id' t-att-value='session_id'/>
+        <input type="hidden" name="stripe_key" t-att-value="acquirer.stripe_publishable_key"/>
+        <input type="hidden" name='invoice_num' t-att-value='reference'/>
+        <input id="acquirer_stripe" type="hidden" name="acquirer" t-att-value="acquirer.id"/>
+        <input type="hidden" name='currency_id' t-att-value='currency_id'/>
+        <input type="hidden" name='partner' t-att-value='partner_id'/>
+        <input type="hidden" name='invoice_id' t-att-value="invoice_id"/>
+        <input type="hidden" name='amount' t-att-value="amount"/>
+        <!-- Submit-->
+        <button id="pay_stripe" type="button" class='btn btn-link'>
+            <img t-if="not submit_txt" src="/payment_stripe/static/src/img/stripe_icon.png"/>
+            <span t-if="submit_txt"><t t-esc="submit_txt"/> <span class="fa fa-long-arrow-right"/></span>
+        </button>
+    </template>
+
+    <record id="payment.payment_acquirer_stripe" model="payment.acquirer">
+        <field name="backend_view_template_id" ref="payment_stripe_ext.backend_stripe_acquirer_button"/>
+    </record>
+
+</odoo>

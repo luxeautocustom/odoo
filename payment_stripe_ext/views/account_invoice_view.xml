@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<odoo>
+    <record model="ir.ui.view" id="payment_stripe_ext_invoice_form">
+        <field name="name">account.move.form.payment</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_info']/group[1]" position="after">
+                <group>
+                    <field name="stripe_payment_url" invisible="1"/>
+                </group>
+            </xpath>
+            <button name="button_draft" position="after">
+                <button name="render_stripe_payment_block_backend" string="Update" type="object"  attrs="{'invisible': ['|', '|', ('move_type', '!=', 'out_invoice'),('state','in',('draft','cancel')),('payment_state', '=', 'paid')]}"/>
+            </button>
+            <notebook position="before">
+                <field name="portal_payment_options" groups="payment_stripe_ext.group_payment_options" class="view_portal_payment_options" widget="html" attrs="{'invisible': ['|', '|', ('move_type', '!=', 'out_invoice'),('state','in',('draft','cancel')),('payment_state', '=', 'paid')]}"/>
+            </notebook>
+        </field>
+    </record>
+</odoo>

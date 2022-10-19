@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="payment_stripe_ext_acquirer_form" model="ir.ui.view">
+        <field name="name">payment.acquirer.form</field>
+        <field name="model">payment.acquirer</field>
+        <field name="inherit_id" ref="payment.payment_acquirer_form"/>
+        <field name="arch" type="xml">
+            <field name="allow_tokenization" position="after">
+                <field name="auto_payment" widget="radio" attrs="{'invisible': [('provider', '!=', 'stripe')]}"/>
+                <field name='backend_view_template_id' />
+            </field>
+        </field>
+    </record>
+
+</odoo>

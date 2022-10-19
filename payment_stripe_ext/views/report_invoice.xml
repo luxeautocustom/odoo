@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="inherited_report_invoice_document" inherit_id="account.report_invoice_document">
+        <xpath expr="//p[@name='payment_term']" position="after">
+            <div class="col-xs-0 pull-right">
+                <t t-if="env.context.get('commit_assetsbundle')">
+                    <t t-if="o.stripe_payment_url and o.state == 'posted' and o.payment_state != 'paid'">
+                        <p>It is also possible to directly pay online</p>
+                        <t t-if="o.amount_total > 0">
+                            <a style="float:right;" t-att-href="o.stripe_payment_url"><img class="oe_edi_stripe_button" src="/payment_stripe_ext/static/src/img/pay_now.png"/></a>
+                        </t>
+                    </t>
+                </t>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

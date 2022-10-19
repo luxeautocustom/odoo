@@ -1,0 +1,94 @@
+.o_web_client .o_form_sheet_bg {
+    position: relative;
+    z-index: 0;
+}
+
+.view_portal_payment_options {
+    overflow: visible;
+    margin-right: 0px !important;
+}
+
+.o_web_client .payment_acquirers button img{
+    width: 80px;
+}
+
+#pay_stripe {
+    position: relative;
+    top: -20px;
+    margin: 10px;
+}
+
+.o_web_client .payment_acquirers {
+    position: relative;
+    padding: 10px 15px;
+    right: -40px; /* improved margin according bootstrap3 */
+    float: right;
+    width: 600px;
+    margin-left: 80px;
+    background: #5f5e97;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#5f5e97), to(#3465A4));
+    background-image: -webkit-linear-gradient(top, #5f5e97, #b9b6ea);
+    background-image:    -moz-linear-gradient(top, #5f5e97, #b9b6ea);
+    background-image:     -ms-linear-gradient(top, #5f5e97, #b9b6ea);
+    background-image:      -o-linear-gradient(top, #5f5e97, #b9b6ea);
+    background-image: linear-gradient(to bottom, #5f5e97, #b9b6ea);
+    border-bottom: 1px solid #b9b6ea;
+
+    -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+}
+
+.o_web_client .payment_acquirers form {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.o_web_client .payment_acquirers form input,
+.o_web_client .payment_acquirers form textarea,
+.o_web_client .payment_acquirers form select
+{
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    background: transparent;
+    border: none;
+    padding: none;
+}
+
+.o_web_client .payment_acquirers::after {
+    content: " ";
+    display: block;
+    width: 10px;
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+    right: 1px;
+
+    margin-bottom: -6px;
+    background: #043574;
+
+    -webkit-transform: skewY(-45deg);
+       -moz-transform: skewY(-45deg);
+        -ms-transform: skewY(-45deg);
+         -o-transform: skewY(-45deg);
+            transform: skewY(-45deg);
+
+    -webkit-box-shadow: inset 1px -1px 2px black, -1px 1px 3px black;
+            box-shadow: inset 1px -1px 2px black, -1px 1px 3px black;
+
+    /* push it under all its siblings, just on top of its root
+       in the z-index stack: div.oe_form_sheetbg */
+    z-index: -1;
+}
+
+.o_web_client .payment_acquirers .payment_header {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 110%;
+    padding-right: 15px;
+    color: white;
+    text-shadow: 0 1px 1px #729FCF, 0 -1px 1px #3465A4;
+}
+.o_web_client .payment_acquirers .payment_header .payment_amount {
+    font-size: 130%;
+    padding: 6px 0px;
+}

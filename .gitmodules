@@ -37,3 +37,8 @@
 	path = OCA/sale-workflow
 	url = git@github.com:OCA/sale-workflow.git
 	branch = 15.0-ocabot-merge-pr-2138-by-pedrobaeza-bump-nobump
+
+[submodule "OCA/account-invoice-reporting"]
+	path = OCA/account-invoice-reporting
+	url = git@github.com:OCA/account-invoice-reporting.git
+	branch = 15.0

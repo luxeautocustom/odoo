@@ -42,3 +42,8 @@
 	path = OCA/account-invoice-reporting
 	url = git@github.com:OCA/account-invoice-reporting.git
 	branch = 15.0
+
+[submodule "luxeautocustom/odoo_themes"]
+	path = luxeautocustom/odoo_themes
+	url = git@github.com:luxeautocustom/odoo_themes.git
+	branch = main

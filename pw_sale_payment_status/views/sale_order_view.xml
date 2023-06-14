@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_tree_inherit_sale_payment_status" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.payment.status</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="amount_total" position="after">
+                <field name="pw_payment_status" widget="badge" decoration-info="pw_payment_status == 'no_invoice'" decoration-success="pw_payment_status  == 'fully_paid'" decoration-warning="pw_payment_status == 'partial_paid'" decoration-danger="pw_payment_status == 'not_paid'"/>
+                <field name="amount_due" sum="Amount Due"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_quotation_tree_with_onboarding_inherit_sale_payment_status" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.payment.status</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <field name="amount_total" position="after">
+                <field name="pw_payment_status" widget="badge" decoration-info="pw_payment_status == 'no_invoice'" decoration-success="pw_payment_status  == 'fully_paid'" decoration-warning="pw_payment_status == 'partial_paid'" decoration-danger="pw_payment_status == 'not_paid'"/>
+                <field name="amount_due" sum="Amount Due"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_order_form_inherit_sale_payment_status" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.payment.status</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="payment_term_id" position="after">
+                <field name="pw_payment_status"/>
+                <field name="amount_due"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_sales_order_filter_inherit_payment_status" model="ir.ui.view">
+        <field name="name">sale.order.list.inherit.payment.status</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <field name="analytic_account_id" position="after">
+                <field name="pw_payment_status"/>
+            </field>
+            <filter name="activities_upcoming_all" position="after">
+                <separator/>
+                <filter string="No Invoice" name="pw_no_invoice" domain="[('pw_payment_status','=', 'no_invoice')]"/>
+                <filter string="Not Paid" name="pw_not_paid" domain="[('pw_payment_status','=', 'not_paid')]"/>
+                <filter string="Partial Paid" name="pw_partial_paid" domain="[('pw_payment_status','=', 'partial_paid')]"/>
+                <filter string="Fully Paid" name="pw_fully_paid" domain="[('pw_payment_status','=', 'fully_paid')]"/>
+            </filter>
+            <filter name="order_month" position="after">
+                <separator/>
+                <filter string="Payment Status" name="pw_payment_status" domain="[]" context="{'group_by': 'pw_payment_status'}"/>
+            </filter>
+        </field>
+    </record>
+</odoo>

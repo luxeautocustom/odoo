@@ -47,3 +47,8 @@
 	path = luxeautocustom/odoo_themes
 	url = git@github.com:luxeautocustom/odoo_themes.git
 	branch = main
+
+[submodule "OCA/e-commerce"]
+	path = OCA/e-commerce
+	url = git@github.com:OCA/e-commerce.git
+	branch = 15.0

@@ -1,59 +1,59 @@
 [submodule "OCA/product-attribute"]
 	path = OCA/product-attribute
-	url = git@github.com:OCA/product-attribute.git
+	url = https://github.com/OCA/product-attribute
 	branch = 15.0
 
 [submodule "OCA/social"]
 	path = OCA/social
-	url = git@github.com:OCA/social.git
+	url = https://github.com/OCA/social
 	branch = 15.0
 
 [submodule "OCA/crm"]
 	path = OCA/crm
-	url = git@github.com:OCA/crm.git
+	url = https://github.com/OCA/crm
 	branch = 15.0
 
 [submodule "OCA/stock-logistics-workflow"]
 	path = OCA/stock-logistics-workflow
-	url = git@github.com:OCA/stock-logistics-workflow.git
+	url = https://github.com/OCA/stock-logistics-workflow
 	branch = 15.0
 
 [submodule "OCA/account-financial-tools"]
 	path = OCA/account-financial-tools
-	url = git@github.com:OCA/account-financial-tools.git
+	url = https://github.com/OCA/account-financial-tools
 	branch = 15.0
 
 [submodule "OCA/server-ux"]
 	path = OCA/server-ux
-	url = git@github.com:OCA/server-ux.git
+	url = https://github.com/OCA/server-ux
 	branch = 15.0
 
 [submodule "OCA/purchase-workflow"]
 	path = OCA/purchase-workflow
-	url = git@github.com:OCA/purchase-workflow.git
+	url = https://github.com/OCA/purchase-workflow
 	branch = 15.0
 
 [submodule "OCA/sale-workflow"]
 	path = OCA/sale-workflow
-	url = git@github.com:OCA/sale-workflow.git
+	url = https://github.com/OCA/sale-workflow
 	branch = 15.0-ocabot-merge-pr-2138-by-pedrobaeza-bump-nobump
 
 [submodule "OCA/account-invoice-reporting"]
 	path = OCA/account-invoice-reporting
-	url = git@github.com:OCA/account-invoice-reporting.git
+	url = https://github.com/OCA/account-invoice-reporting
 	branch = 15.0
 
 [submodule "luxeautocustom/odoo_themes"]
 	path = luxeautocustom/odoo_themes
-	url = git@github.com:luxeautocustom/odoo_themes.git
+	url = https://github.com/luxeautocustom/odoo_themes
 	branch = main
 
 [submodule "OCA/e-commerce"]
 	path = OCA/e-commerce
-	url = git@github.com:OCA/e-commerce.git
+	url = https://github.com/OCA/e-commerce
 	branch = 15.0
 
 [submodule "OCA/partner-contact"]
 	path = OCA/partner-contact
-	url = git@github.com:OCA/partner-contact.git
+	url = https://github.com/OCA/partner-contact
 	branch = 15.0
